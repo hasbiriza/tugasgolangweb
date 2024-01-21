@@ -38,19 +38,23 @@ type Starbucks struct {
 	Menu     []string
 }
 
+// Deklerasi Handler
 func HandlerMcDonald(w http.ResponseWriter, r *http.Request) {
+	//If jika http berhasil connect
 	if r.Method == "GET" {
 		mcd := []McDonald{
 			{"McDonald's A", "Jl. McD 123", []string{"Big Mac", "McNuggets", "Fries"}},
 			{"McDonald's B", "Jl. McD 456", []string{"Quarter Pounder", "Filet-O-Fish", "Apple Pie"}},
 			{"McDonald's C", "Jl. McD 789", []string{"McFlurry", "Happy Meal", "McCafe"}},
 		}
+		//merubah hasil struct kedalam bentuk json
 		res, err := json.Marshal(mcd)
 		if err != nil {
 			http.Error(w, "Gagal konversi ke JSON", http.StatusInternalServerError)
 		}
 		w.Write(res)
 		w.Header().Set("Content-Type", "application/json")
+		//jika gagal connect http
 	} else {
 		http.Error(w, "Method Tidak diizinkan", http.StatusMethodNotAllowed)
 	}
@@ -135,7 +139,7 @@ func main() {
 	http.HandleFunc("/list-aw", HandlerAW)
 	http.HandleFunc("/list-pizzahut", HandlerPizzaHut)
 	http.HandleFunc("/list-starbucks", HandlerStarbucks)
-
-	fmt.Println("Server running at http://localhost:8080")
+	//untuk running server di port 8080
+	fmt.Println("Server berjalan pada http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
 }
